@@ -9,37 +9,62 @@ public class BestScore : MonoBehaviour
     public Text highScoreText;
     public static BestScore Instance;
     public Canvas canvas;
+    public string highName;
     MainManager mainManager;
     MenuManager menuManager;
     private void Awake()
     {
-
+        Text child = Instantiate(highScoreText, new Vector3(1000, 1050, 0), highScoreText.transform.rotation);
+        child.transform.parent = canvas.transform;
         if (Instance != null)
         {
             Destroy(gameObject);
+            return;
         }
         Instance = this;
         DontDestroyOnLoad(Instance);
-        Text child = Instantiate(highScoreText, new Vector3(150, 150, 0), highScoreText.transform.rotation);
-        child.transform.parent = canvas.transform;
+        
 
 
     }
     void Start()
     {
-        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
+        InvokeRepeating("FindMainManager", 0, 5);
+        FindMainManager();
+       // mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
         menuManager = GameObject.Find("MenuManager").GetComponent<MenuManager>();
-        
+        highScoreText.text = PlayerPrefs.GetInt("HighScore").ToString();
+        highScore = PlayerPrefs.GetInt("HighScore");
+        if(PlayerPrefs.GetString("HighName")!=null)
+        {
+            highName = PlayerPrefs.GetString("HighName");
+        }
+        else
+        {
+            highName = menuManager.nickName;
+        }
+      //  PlayerPrefs.SetInt("HighScore", 0);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+       
+        Debug.Log(mainManager.m_Points);
         if(mainManager.m_Points>highScore)
         {
+            highName = menuManager.nickName;
             highScore = mainManager.m_Points;
+            Debug.Log("HighScore:" + highScore);
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.SetString("HighName", highName);
         }
-        highScoreText.text = "Best Score:"+ menuManager.nickName+"  "+highScore;
+        highScoreText.text = "Best Score: "+ highName+"  "+highScore;
+    }
+    void FindMainManager()
+    {
+        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
     }
     
 }

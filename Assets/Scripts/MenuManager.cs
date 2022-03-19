@@ -31,4 +31,8 @@ public class MenuManager : MonoBehaviour
         Debug.Log(nickName);
         SceneManager.LoadScene(1);
     }
+    public void Exit()
+    {
+        Application.Quit();
+    }
 }
