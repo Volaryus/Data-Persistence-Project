@@ -43,7 +43,7 @@ public class BestScore : MonoBehaviour
         {
             highName = menuManager.nickName;
         }
-      //  PlayerPrefs.SetInt("HighScore", 0);
+      // PlayerPrefs.SetInt("HighScore", 0);
 
     }
 
